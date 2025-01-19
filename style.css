@@ -1,0 +1,61 @@
+/* Apply Roboto font */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    /* Use Roboto font */
+    height: 100vh;
+    /* Full height */
+    width: 100vw;
+    /* Full width */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    /* Default to light theme */
+    overflow: hidden;
+    /* Prevent scrolling */
+}
+
+/* For light theme */
+body {
+    background-color: #fff;
+    color: #333;
+}
+
+/* For dark theme */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #121212;
+        color: #fff;
+    }
+
+    #canvas {
+        background-color: #1e1e1e;
+        color: #fff;
+        box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.1);
+    }
+}
+
+/* Full-screen editable div (canvas) */
+#canvas {
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    font-size: 12px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    border: none;
+    outline: none;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+    resize: none;
+    overflow-y: auto;
+    text-align: left;
+    line-height: 1.5;
+}
