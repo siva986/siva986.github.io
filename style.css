@@ -74,8 +74,6 @@ body {
 /* Ads Section */
 .ads {
     width: 300px;
-    background-color: #f4f4f4;
-    border-left: 1px solid #ccc;
     padding: 10px;
     overflow-y: auto;
 }
