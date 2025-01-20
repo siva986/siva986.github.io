@@ -1,5 +1,14 @@
 let typingTimer;  // Timer variable
 let doneTypingInterval = 300;  // Time in milliseconds (300ms delay)
+let listIndex = 1;
+
+function addListItem() {
+    const list = document.getElementById('dynamicList');
+    const listItem = document.createElement('li');
+    listItem.textContent = `JSON ${listIndex}`;
+    list.appendChild(listItem);
+    listIndex++;
+}
 
 function handleInput() {
     clearTimeout(typingTimer);  // Clear the previous timer

@@ -1,10 +1,58 @@
 /* Apply Roboto font */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
 
-* {
-    margin: 0;
+
+
+.sidebar {
+    align-items: start;
+    width: 250px;
+    height: 100%;
+    padding: 10px;
+    display: inline-block;
+    overflow-y: auto;
+}
+
+
+
+.sidebar ul {
+    list-style-type: none;
     padding: 0;
-    box-sizing: border-box;
+}
+
+.sidebar ul li {
+    padding-right: 10px;
+    padding-left: 10px;
+    padding-top: 5px;
+    font-size: 12px;
+    font-weight: 500;
+    padding-bottom: 5px;
+    margin: 5px 0;
+    background-color: #424e5b6a;
+    border-radius: 4px;
+}
+
+.sidebar ul h4 {
+    font-size: 12px;
+}
+
+.sidebar ul li:hover {
+    background-color: #6165696a;
+    cursor: pointer;
+}
+
+.logo {
+    margin-right: 30px;
+    display: inline-block;
+}
+
+.add-icon {
+    cursor: pointer;
+    width: 24px;
+    text-align: center;
+    height: 24px;
+    border-radius: 4px;
+    border: solid;
+    border-color: #121212;
 }
 
 body {
@@ -21,6 +69,15 @@ body {
     /* Default to light theme */
     overflow: hidden;
     /* Prevent scrolling */
+}
+
+/* Ads Section */
+.ads {
+    width: 300px;
+    background-color: #f4f4f4;
+    border-left: 1px solid #ccc;
+    padding: 10px;
+    overflow-y: auto;
 }
 
 /* For light theme */
@@ -43,7 +100,6 @@ body {
     }
 }
 
-/* Full-screen editable div (canvas) */
 #canvas {
     width: 100%;
     height: 100%;
