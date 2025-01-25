@@ -4,60 +4,331 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beautify JSON</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Json Validator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: "Geist", sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #151515;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
 
-    <!-- Google AdSense script -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5045940702037067"
-        crossorigin="anonymous"></script>
+
+
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 3px;
+            border-bottom: 1.5px solid #333438;
+
+        }
+
+        .title {
+            margin: 8px;
+        }
+
+        .tab-list {
+            display: flex;
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            gap: 10;
+            overflow-x: auto;
+            white-space: nowrap;
+            scrollbar-width: none;
+            flex-grow: 1;
+        }
+
+        .tab-list::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-item {
+            display: flex;
+            align-items: center;
+            padding: 3px 12px;
+            font-size: 12px;
+            font-weight: 500;
+            border-radius: 3px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .tab-item.active {
+            background-color: #26272c;
+        }
+
+        .tab-item span {
+            margin-right: 15px;
+        }
+
+        .tab-item .close-btn {
+            background: none;
+            border: none;
+            color: #666666;
+            cursor: pointer;
+            text-align: center;
+            font-size: 16px;
+            padding: 0px;
+        }
+
+        .tab-item .close-btn:hover {
+            color: white;
+        }
+
+        .add-tab {
+            padding: 3px 8px;
+            background-color: #26272c00;
+            margin-right: 10px;
+            color: #262626;
+            border: none;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .input-header {
+            display: inline-block;
+            position: relative;
+            height: 0;
+        }
+
+        .format-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            padding: 3px 8px;
+            background-color: #26272c00;
+            color: #1d5e39;
+            border: none;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .format-btn:hover {
+            background-color: white;
+        }
+
+        .add-tab:hover {
+            background-color: white;
+        }
+
+        .content {
+            display: flex;
+            flex-grow: 1;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .input-container,
+        .preview-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            overflow: auto;
+        }
+
+        .input-container {
+            border-right: 1px solid #444;
+        }
+
+        .input-container textarea {
+            flex-grow: 1;
+            padding: 10px;
+            background-color: #2d2d2d00;
+            color: #ffffff;
+            resize: none;
+            border: none;
+        }
+
+        .input-container textarea:focus {
+            outline: none;
+        }
+
+        .preview-container {
+            padding: 10px;
+            background-color: #2d2d2d00;
+            color: #ffffff;
+        }
+
+        .preview-container pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            color: #BB86FC;
+        }
+
+        .divider {
+            width: 5px;
+            cursor: col-resize;
+            background-color: #444;
+        }
+
+        .divider:hover {
+            background-color: #666;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="sidebar">
-        <h4 class="logo">
-            Beautify JSON
-            <button class="add-icon" onclick="addListItem()">+</button>
-        </h4>
-        <ul id="dynamicList">
+    <div class="header">
+        <h6 class="title">JSON</h6>
+        <button class="add-tab" onclick="addTab()">+</button>
+        <ul id="tabList" class="tab-list">
         </ul>
     </div>
 
-    <div id="canvas" contenteditable="true" placeholder="Enter your JSON string here..." oninput="handleInput()"
-        class="canvas">
+    <div class="content">
+        <div class="input-container">
+            <div class="input-header">
+                <button class="format-btn" onclick="formatJson()">⇋</button>
+            </div>
+            <textarea id="jsonInput" placeholder="Paste your JSON here..." oninput="updatePreview()"></textarea>
+        </div>
+        <div class="divider" id="divider"></div>
+        <div class="preview-container" id="jsonPreview">
+            <pre>Preview will appear here</pre>
+        </div>
     </div>
 
+    <script>
+        let tabCount = 1;
+
+        function addTab() {
+            tabCount++;
+            const tabList = document.getElementById('tabList');
+
+            // Create new tab
+            const newTab = document.createElement('li');
+            newTab.className = 'tab-item';
+            newTab.dataset.id = `tab_${tabCount}`;
+            newTab.innerHTML = `<span>Form ${tabCount}</span><button class="close-btn" onclick="closeTab(this)">&times;</button>`;
+
+            // Add click event to select the tab
+            newTab.onclick = () => selectTab(newTab);
+
+            tabList.appendChild(newTab);
+
+            // Select the new tab
+            selectTab(newTab);
+        }
+
+        function closeTab(button) {
+            const tabItem = button.parentElement;
+            const tabList = document.getElementById('tabList');
 
 
+            const isActive = tabItem.classList.contains('active');
+            tabItem.remove();
 
-    <div class="ads">
-        <script async
-            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5045940702037067"
-            crossorigin="anonymous"></script>
-        <!-- side Ad -->
-        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5045940702037067"
-            data-ad-slot="2516806568" data-ad-format="auto" data-full-width-responsive="true"></ins>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-    </div>
+            // // If the closed tab was active, select the first tab
+            // if (isActive) {
+            //     selectTab(tabList.children[0]);
+            // }
+        }
+
+        function selectTab(tab) {
+            const tabs = document.querySelectorAll('.tab-item');
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+
+            // Clear JSON input and preview when switching tabs
+            document.getElementById('jsonInput').value = '';
+            document.getElementById('jsonPreview').querySelector('pre').textContent = 'Preview will appear here';
+        }
+
+        function updatePreview() {
+            const input = document.getElementById('jsonInput').value;
+            const preview = document.getElementById('jsonPreview').querySelector('pre');
+            try {
+                const formatted = JSON.stringify(JSON.parse(input), null, 2);
+                preview.textContent = formatted;
+            } catch (e) {
+                preview.textContent = 'Invalid JSON';
+            }
+        }
+
+        // Resizing logic
+        const resizer = document.getElementById('divider');
+        const inputContainer = document.querySelector('.input-container');
+        const displayContainer = document.querySelector('.preview-container');
+
+        let isResizing = false;
+
+        resizer.addEventListener('mousedown', (e) => {
+            isResizing = true;
+            document.body.style.cursor = 'col-resize';
+            document.addEventListener('mousemove', resize);
+            document.addEventListener('mouseup', stopResize);
+        });
+
+        function resize(e) {
+            if (isResizing) {
+                const totalWidth = inputContainer.offsetWidth + displayContainer.offsetWidth + resizer.offsetWidth;
+                const newInputWidth = e.clientX - inputContainer.getBoundingClientRect().left;
+                const newDisplayWidth = totalWidth - newInputWidth - resizer.offsetWidth;
+
+                if (newInputWidth > 100 && newDisplayWidth > 100) {
+                    inputContainer.style.flex = `0 0 ${newInputWidth}px`;
+                    displayContainer.style.flex = `0 0 ${newDisplayWidth}px`;
+                }
+            }
+        }
+
+        function stopResize() {
+            isResizing = false;
+            document.body.style.cursor = '';
+            document.removeEventListener('mousemove', resize);
+            document.removeEventListener('mouseup', stopResize);
+        }
+
+        function formatJson() {
+            const input = document.getElementById('jsonInput');
+            try {
 
 
-    <script src="script.js"></script>
+                input.value = formatString(input.value);
+                updatePreview();
+            } catch (e) {
+                alert('Invalid JSON! Unable to format.');
+            }
+        }
+
+        function formatString(inputString) {
+            let formatted = "";
+            let indentationLevel = 0;
+            const indentSize = 4; // Number of spaces for each indentation level
+
+            inputString = inputString.replace(/\s+/g, "");
+
+            for (const char of inputString) {
+                if (char === "{" || char === "[") {
+                    formatted += char + "\n" + " ".repeat((indentationLevel + 1) * indentSize);
+                    indentationLevel++;
+                } else if (char === "}" || char === "]") {
+                    indentationLevel--;
+                    formatted += "\n" + " ".repeat(indentationLevel * indentSize) + char;
+                } else if (char === ",") {
+                    formatted += char + "\n" + " ".repeat(indentationLevel * indentSize);
+                } else {
+                    formatted += char;
+                }
+            }
+
+            return formatted;
+        }
+
+    </script>
 </body>
 
 </html>
-
-
-
-
-<!-- Google AdSense Ad -->
-<!-- <div align="center">
-        <script async
-            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5045940702037067"
-            crossorigin="anonymous"></script>
-        <ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px"
-            data-ad-client="ca-pub-5045940702037067" data-ad-slot="1234567890"></ins>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-    </div> -->
