@@ -61,15 +61,6 @@ function beautifyJson() {
     }
     document.getElementById('canvas').innerHTML = beautifiedString;
 
-
-    // try {
-    //     const parsedJson = JSON.parse(rawString);
-    //     const beautifiedString = JSON.stringify(parsedJson, null, 2);  // Beautify with 2 spaces indentation
-
-    //     document.getElementById('canvas').innerText = beautifiedString;  // Update the same div with beautified text
-    // } catch (error) {
-    //     document.getElementById('canvas').innerText = 'Invalid JSON format. Please check your input.';
-    // }
 }
 
 
@@ -242,3 +233,41 @@ function updateDisplay() {
     document.getElementById("jsonDisplay").querySelector("pre").textContent = input;
 }
 
+
+
+
+
+///////////////////////////////////////--------------
+const addButton = document.getElementById("add-btn");
+const listContainer = document.getElementById("list");
+let listData = []; // In-memory storage for list data
+
+// Render the list items from `listData`
+function renderList() {
+    listContainer.innerHTML = ""; // Clear existing list
+    listData.forEach((value, index) => {
+        const listItem = document.createElement("li");
+        const input = document.createElement("input");
+        input.type = "text";
+        input.value = value;
+
+        // Update in-memory data on input change
+        input.addEventListener("input", () => {
+            listData[index] = input.value;
+        });
+
+        listItem.appendChild(input);
+        listContainer.appendChild(listItem);
+    });
+}
+
+// Add a new item to the list
+function addListItem() {
+    listData.push(""); // Add an empty string for the new item
+    renderList(); // Re-render the list
+}
+
+// Add button event listener
+addButton.addEventListener("click", addListItem);
+
+// Simulate file chang

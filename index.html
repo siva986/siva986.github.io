@@ -96,16 +96,22 @@
         }
 
         .input-header {
-            display: inline-block;
             position: relative;
+            top: 10px;
             height: 0;
         }
 
-        .format-btn {
+
+        .copy-format {
             position: absolute;
             top: 5px;
-            right: 5px;
-            padding: 3px 8px;
+            right: 35px;
+            position: absolute;
+            gap: 5px;
+            right: 10px;
+        }
+
+        .format-btn {
             background-color: #26272c00;
             color: #1d5e39;
             border: none;
@@ -115,6 +121,21 @@
         }
 
         .format-btn:hover {
+            background-color: white;
+        }
+
+        .copy-btn {
+
+            padding: 3px 8px;
+            background-color: #26272c00;
+            color: #1d5e39;
+            border: none;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .copy-btn:hover {
             background-color: white;
         }
 
@@ -133,13 +154,15 @@
         .preview-container {
             flex: 1;
             display: flex;
+            overflow: hidden;
             flex-direction: column;
             box-sizing: border-box;
-            overflow: auto;
+
         }
 
         .input-container {
             border-right: 1px solid #444;
+            overflow: hidden;
         }
 
         .input-container textarea {
@@ -149,10 +172,35 @@
             color: #ffffff;
             resize: none;
             border: none;
+
+
         }
 
         .input-container textarea:focus {
             outline: none;
+        }
+
+        /* width */
+        ::-webkit-scrollbar {
+            width: 8px;
+            margin-right: 4px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #353535;
+            border-radius: 10px;
+            margin: 2px;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #242428;
         }
 
         .preview-container {
@@ -185,13 +233,17 @@
         <h6 class="title">JSON</h6>
         <button class="add-tab" onclick="addTab()">+</button>
         <ul id="tabList" class="tab-list">
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
         </ul>
     </div>
 
     <div class="content">
         <div class="input-container">
             <div class="input-header">
-                <button class="format-btn" onclick="formatJson()">⇋</button>
+                <div class="copy-format">
+                    <button class="format-btn" onclick="formatJson()">format</button>
+                    <button class="copy-btn" onclick="copyText()">copy</button>
+                </div>
             </div>
             <textarea id="jsonInput" placeholder="Paste your JSON here..." oninput="updatePreview()"></textarea>
         </div>
@@ -202,17 +254,26 @@
     </div>
 
     <script>
-        let tabCount = 1;
+        let files = [];
+
+
+
+        window.onload = () => {
+            addTab();
+        };
 
         function addTab() {
-            tabCount++;
+            files.push({
+                id: files.length + 1,
+                content: ''
+            });
             const tabList = document.getElementById('tabList');
 
             // Create new tab
             const newTab = document.createElement('li');
             newTab.className = 'tab-item';
-            newTab.dataset.id = `tab_${tabCount}`;
-            newTab.innerHTML = `<span>Form ${tabCount}</span><button class="close-btn" onclick="closeTab(this)">&times;</button>`;
+            newTab.dataset.id = `tab_${files.length}`;
+            newTab.innerHTML = `<span>Json ${files.length}</span><button class="close-btn" onclick="closeTab(this)">&times;</button>`;
 
             // Add click event to select the tab
             newTab.onclick = () => selectTab(newTab);
@@ -226,26 +287,60 @@
         function closeTab(button) {
             const tabItem = button.parentElement;
             const tabList = document.getElementById('tabList');
+            const tabId = tabItem.dataset.id;
 
+            if (tabList.children.length > 2) {
+                tabItem.remove();
+                // Find the last remaining tab
+                const remainingTabs = tabList.querySelectorAll('.tab-item'); // Update the list of tabs
+                const lastTab = remainingTabs[remainingTabs.length - 1]; // Select the last tab
 
-            const isActive = tabItem.classList.contains('active');
-            tabItem.remove();
-
-            // // If the closed tab was active, select the first tab
-            // if (isActive) {
-            //     selectTab(tabList.children[0]);
-            // }
+                if (lastTab) {
+                    selectTab(lastTab); // Activate the last tab
+                }
+            } else {
+                alert('Cannot remove the last tab.');
+            }
         }
+
 
         function selectTab(tab) {
             const tabs = document.querySelectorAll('.tab-item');
             tabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
 
-            // Clear JSON input and preview when switching tabs
-            document.getElementById('jsonInput').value = '';
-            document.getElementById('jsonPreview').querySelector('pre').textContent = 'Preview will appear here';
+            const tabId = tab.dataset.id;
+            const file = files.find(f => `tab_${f.id}` === tabId);
+
+            if (file) {
+                document.getElementById('jsonInput').value = file.content;
+                updatePreview();
+            } else {
+                document.getElementById('jsonInput').value = '';
+                document.getElementById('jsonPreview').querySelector('pre').textContent = 'Preview will appear here';
+            }
         }
+
+        document.getElementById('jsonInput').addEventListener('input', () => {
+            const activeTab = document.querySelector('.tab-item.active');
+            if (activeTab) {
+                const tabId = activeTab.dataset.id;
+                const file = files.find(f => `tab_${f.id}` === tabId);
+                if (file) {
+                    file.content = document.getElementById('jsonInput').value;
+                }
+            }
+        });
+
+        // function selectTab(tab) {
+        //     const tabs = document.querySelectorAll('.tab-item');
+        //     tabs.forEach(t => t.classList.remove('active'));
+        //     tab.classList.add('active');
+
+        //     // Clear JSON input and preview when switching tabs
+        //     document.getElementById('jsonInput').value = '';
+        //     document.getElementById('jsonPreview').querySelector('pre').textContent = 'Preview will appear here';
+        // }
 
         function updatePreview() {
             const input = document.getElementById('jsonInput').value;
@@ -256,6 +351,13 @@
             } catch (e) {
                 preview.textContent = 'Invalid JSON';
             }
+        }
+
+        function copyText() {
+            // Get the text field
+            var copyText = document.getElementById("jsonInput");
+
+            navigator.clipboard.writeText(copyText.value);
         }
 
         // Resizing logic
@@ -309,7 +411,7 @@
             let indentationLevel = 0;
             const indentSize = 4; // Number of spaces for each indentation level
 
-            inputString = inputString.replace(/\s+/g, "");
+            // inputString = inputString.replace(/\s+/g, "");
 
             for (const char of inputString) {
                 if (char === "{" || char === "[") {
@@ -320,6 +422,9 @@
                     formatted += "\n" + " ".repeat(indentationLevel * indentSize) + char;
                 } else if (char === ",") {
                     formatted += char + "\n" + " ".repeat(indentationLevel * indentSize);
+                } else if (char == ' ' || char == '\n') {
+                    continue;
+
                 } else {
                     formatted += char;
                 }
