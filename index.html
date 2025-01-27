@@ -180,8 +180,6 @@
 
         }
 
-
-
         .input-container,
         .preview-container {
             flex: 1;
@@ -330,6 +328,12 @@
         .content-info li {
             margin-bottom: 5px;
         }
+
+        .siteAd {
+            display: block;
+            ;
+            width: 250px;
+        }
     </style>
 </head>
 
@@ -356,12 +360,31 @@
             <div class="divider" id="divider"></div>
             <div class="preview-container" id="jsonPreview">
                 <pre>Preview will appear here</pre>
+                <script async
+                    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5045940702037067"
+                    crossorigin="anonymous"></script>
+                <!-- side Ad -->
+                <ins class="siteAd" style="display:block" data-ad-client="ca-pub-5045940702037067"
+                    data-ad-slot="2516806568" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
             </div>
+
 
 
         </div>
         <div class="contant-text">
             <section class="content-info">
+                <script async
+                    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5045940702037067"
+                    crossorigin="anonymous"></script>
+                <!-- bottomad -->
+                <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5045940702037067"
+                    data-ad-slot="7763798777" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
                 <h1>Welcome to JSON Tools</h1>
                 <p>Our platform provides a set of tools to format, validate, and parse JSON with ease. Whether you're a
                     developer, data analyst, or a student, these tools can save you time and effort.</p>
@@ -386,63 +409,14 @@
                     <li>JSON Viewer – Visualize JSON data in a tree-like structure.</li>
                     <li>Code Integrations – Use IDE plugins for quick formatting in your editor.</li>
                 </ol>
+
             </section>
 
         </div>
 
 
     </div>
-    <!-- <div class="content">
-        <div class="input-container">
-            <div class="input-header">
-                <div class="copy-format">
-                    <button class="format-btn" onclick="formatJson()">format</button>
-                    <button class="copy-btn" onclick="copyText()">copy</button>
-                </div>
-            </div>
-            <textarea id="jsonInput" placeholder="Paste your JSON here..." oninput="updatePreview()"></textarea>
-        </div>
-        <div class="divider" id="divider"></div>
-        <div class="preview-container" id="jsonPreview">
 
-            <pre>Preview will appear here</pre>
-        </div>
-        <div class="ads">
-            <script async
-                src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5045940702037067"
-                crossorigin="anonymous"></script>
-
-            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5045940702037067"
-                data-ad-slot="2516806568" data-ad-format="auto" data-full-width-responsive="true"></ins>
-            <script>
-                (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-        </div>
-    </div>
-    <section class="content-info">
-        <h1>Welcome to JSON Tools</h1>
-        <p>Our platform provides a set of tools to format, validate, and parse JSON with ease. Whether you're a
-            developer, data analyst, or a student, these tools can save you time and effort.</p>
-
-        <h2>How to Use JSON Effectively</h2>
-        <p>JSON (JavaScript Object Notation) is a lightweight data-interchange format. It’s easy for humans to read
-            and write and easy for machines to parse and generate. Here are some tips for effective JSON usage:</p>
-        <ul>
-            <li>Ensure your JSON is well-structured and adheres to the correct syntax.</li>
-            <li>Validate your JSON using tools to catch errors early.</li>
-            <li>Keep your JSON schemas clear and consistent for better interoperability.</li>
-        </ul>
-
-        <h2>Top 5 JSON Formatting Tools</h2>
-        <p>Here are some of the best tools you can use to format and validate JSON:</p>
-        <ol>
-            <li>Online JSON Formatter – Quickly format and beautify your JSON.</li>
-            <li>JSON Validator – Check your JSON for syntax errors.</li>
-            <li>JSON Editor – Edit JSON directly in an easy-to-use interface.</li>
-            <li>JSON Viewer – Visualize JSON data in a tree-like structure.</li>
-            <li>Code Integrations – Use IDE plugins for quick formatting in your editor.</li>
-        </ol>
-    </section> -->
 
 
 
@@ -538,7 +512,7 @@
                 const formatted = JSON.stringify(JSON.parse(input), null, 2);
                 preview.textContent = formatted;
             } catch (e) {
-                preview.textContent = 'Invalid JSON';
+                preview.textContent = 'Paste Your JSON Correctly';
             }
         }
 
