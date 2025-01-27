@@ -5,6 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Json Validator</title>
+    <meta name="description"
+        content="Convert your JSON data to code models in multiple programming languages like Python, Dart Java, C#, and more with our JSON Converter tool.">
+    <meta name="keywords"
+        content="JSON converter, JSON to code, JSON models, Python, Java, C#, code generator, JSON to model converter">
+    <meta name="author" content="Your Name or Company">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet">
@@ -100,16 +105,15 @@
 
         .input-header {
             position: relative;
-            top: 2px;
-            height: 0;
-        }
+            display: flex;
+            top: 10px;
+            height: 0px;
 
+        }
 
         .copy-format {
             position: absolute;
-            top: 5px;
-            right: 35px;
-            position: absolute;
+            display: flex;
             gap: 5px;
             right: 10px;
         }
@@ -149,19 +153,42 @@
             background-color: white;
         }
 
-        .content {
-            display: flex;
+        .scroll {
+            display: block;
             flex-grow: 1;
-            overflow: hidden;
-            position: relative;
+            height: 100%;
+            overflow: auto;
+            display: flex;
+            flex-direction: column;
         }
+
+
+
+        .contant-text {
+            padding: 20px;
+            background-color: #2d2d2d;
+            color: #ffffff;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        .contant {
+            display: inline-flex;
+            flex-direction: row;
+            height: 1000px;
+            flex-grow: 1;
+
+        }
+
+
 
         .input-container,
         .preview-container {
             flex: 1;
             display: flex;
+            height: 1000px;
             overflow: hidden;
-            flex-direction: column;
+            flex-direction: row;
             box-sizing: border-box;
 
         }
@@ -178,8 +205,7 @@
             color: #ffffff;
             resize: none;
             border: none;
-
-
+            overflow-y: auto;
         }
 
         .input-container textarea:focus {
@@ -213,6 +239,7 @@
             padding: 10px;
             background-color: #2d2d2d00;
             color: #ffffff;
+            overflow-y: auto;
         }
 
         .preview-container pre {
@@ -264,6 +291,7 @@
             width: 200px;
         }
 
+
         .popup-menu a {
             padding: 12px 16px;
             display: block;
@@ -276,7 +304,31 @@
         }
 
         .ads {
-            width: 200px;
+            width: 150px;
+        }
+
+        .content-info {
+            padding: 20px;
+            background-color: #2d2d2d;
+            color: #ffffff;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        .content-info h1,
+        .content-info h2 {
+            color: #BB86FC;
+            margin-bottom: 10px;
+        }
+
+        .content-info ul,
+        .content-info ol {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        .content-info li {
+            margin-bottom: 5px;
         }
     </style>
 </head>
@@ -289,8 +341,58 @@
             <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
         </ul>
     </div>
+    <div class="scroll">
+        <div class="contant">
+            <div class="input-container">
+                <textarea id="jsonInput" placeholder="Paste your JSON here..." oninput="updatePreview()"></textarea>
+                <div class="input-header">
+                    <div class="copy-format">
+                        <button class="format-btn" onclick="formatJson()">format</button>
+                        <button class="copy-btn" onclick="copyText()">copy</button>
+                    </div>
+                </div>
 
-    <div class="content">
+            </div>
+            <div class="divider" id="divider"></div>
+            <div class="preview-container" id="jsonPreview">
+                <pre>Preview will appear here</pre>
+            </div>
+
+
+        </div>
+        <div class="contant-text">
+            <section class="content-info">
+                <h1>Welcome to JSON Tools</h1>
+                <p>Our platform provides a set of tools to format, validate, and parse JSON with ease. Whether you're a
+                    developer, data analyst, or a student, these tools can save you time and effort.</p>
+
+                <h2>How to Use JSON Effectively</h2>
+                <p>JSON (JavaScript Object Notation) is a lightweight data-interchange format. It’s easy for humans to
+                    read
+                    and write and easy for machines to parse and generate. Here are some tips for effective JSON usage:
+                </p>
+                <ul>
+                    <li>Ensure your JSON is well-structured and adheres to the correct syntax.</li>
+                    <li>Validate your JSON using tools to catch errors early.</li>
+                    <li>Keep your JSON schemas clear and consistent for better interoperability.</li>
+                </ul>
+
+                <h2>Top 5 JSON Formatting Tools</h2>
+                <p>Here are some of the best tools you can use to format and validate JSON:</p>
+                <ol>
+                    <li>Online JSON Formatter – Quickly format and beautify your JSON.</li>
+                    <li>JSON Validator – Check your JSON for syntax errors.</li>
+                    <li>JSON Editor – Edit JSON directly in an easy-to-use interface.</li>
+                    <li>JSON Viewer – Visualize JSON data in a tree-like structure.</li>
+                    <li>Code Integrations – Use IDE plugins for quick formatting in your editor.</li>
+                </ol>
+            </section>
+
+        </div>
+
+
+    </div>
+    <!-- <div class="content">
         <div class="input-container">
             <div class="input-header">
                 <div class="copy-format">
@@ -302,16 +404,7 @@
         </div>
         <div class="divider" id="divider"></div>
         <div class="preview-container" id="jsonPreview">
-            <!-- <div class="menu">
-                <button class="menu-btn">
-                    <div class=" popup-menu" id="popupMenu">
-                        <a href="#">Option 1</a>
-                        <a href="#">Option 2</a>
-                        <a href="#">Option 3</a>
-                    </div>
-                    Options
-                </button>
-            </div> -->
+
             <pre>Preview will appear here</pre>
         </div>
         <div class="ads">
@@ -326,6 +419,32 @@
             </script>
         </div>
     </div>
+    <section class="content-info">
+        <h1>Welcome to JSON Tools</h1>
+        <p>Our platform provides a set of tools to format, validate, and parse JSON with ease. Whether you're a
+            developer, data analyst, or a student, these tools can save you time and effort.</p>
+
+        <h2>How to Use JSON Effectively</h2>
+        <p>JSON (JavaScript Object Notation) is a lightweight data-interchange format. It’s easy for humans to read
+            and write and easy for machines to parse and generate. Here are some tips for effective JSON usage:</p>
+        <ul>
+            <li>Ensure your JSON is well-structured and adheres to the correct syntax.</li>
+            <li>Validate your JSON using tools to catch errors early.</li>
+            <li>Keep your JSON schemas clear and consistent for better interoperability.</li>
+        </ul>
+
+        <h2>Top 5 JSON Formatting Tools</h2>
+        <p>Here are some of the best tools you can use to format and validate JSON:</p>
+        <ol>
+            <li>Online JSON Formatter – Quickly format and beautify your JSON.</li>
+            <li>JSON Validator – Check your JSON for syntax errors.</li>
+            <li>JSON Editor – Edit JSON directly in an easy-to-use interface.</li>
+            <li>JSON Viewer – Visualize JSON data in a tree-like structure.</li>
+            <li>Code Integrations – Use IDE plugins for quick formatting in your editor.</li>
+        </ol>
+    </section> -->
+
+
 
     <script>
         let files = [];
@@ -382,7 +501,9 @@
 
             if (file) {
                 document.getElementById('jsonInput').value = file.content;
+                formatJson();
                 updatePreview();
+
             } else {
                 document.getElementById('jsonInput').value = '';
                 document.getElementById('jsonPreview').querySelector('pre').textContent = 'Preview will appear here';
